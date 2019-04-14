@@ -1,0 +1,74 @@
+package com.springboot.bookstore.bean;
+
+public class Book {
+private int bid;
+private String name;
+private String author;
+private String press;
+private float price;
+private float discount;
+private String rdate;
+private String type;
+private String presentation;
+private String reserve;
+public int getBid() {
+	return bid;
+}
+public void setBid(int bid) {
+	this.bid = bid;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+public String getAuthor() {
+	return author;
+}
+public void setAuthor(String author) {
+	this.author = author;
+}
+public String getPress() {
+	return press;
+}
+public void setPress(String press) {
+	this.press = press;
+}
+public float getPrice() {
+	return price;
+}
+public void setPrice(float price) {
+	this.price = price;
+}
+public float getDiscount() {
+	return discount;
+}
+public void setDiscount(float discount) {
+	this.discount = discount;
+}
+public String getRdate() {
+	return rdate;
+}
+public void setRdate(String rdate) {
+	this.rdate = rdate;
+}
+public String getType() {
+	return type;
+}
+public void setType(String type) {
+	this.type = type;
+}
+public String getPresentation() {
+	return presentation;
+}
+public void setPresentation(String presentation) {
+	this.presentation = presentation;
+}
+public String getReserve() {
+	return reserve;
+}
+public void setReserve(String reserve) {
+	this.reserve = reserve;
+}
+}
