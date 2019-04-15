@@ -27,6 +27,4 @@ CREATE TABLE `bookstore`.`customer` (
   `discount` FLOAT NULL,
   `rdate` VARCHAR(45) NULL,
   `type` VARCHAR(45) NULL,
-  `presentation` VARCHAR(45) NULL,
-  `reserve` VARCHAR(45) NULL,
   PRIMARY KEY (`bid`));

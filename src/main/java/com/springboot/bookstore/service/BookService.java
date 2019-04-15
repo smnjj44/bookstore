@@ -18,4 +18,24 @@ public class BookService {
 		List<Book> list = bookMapper.getAllBooks();
 		return list;
 	}
+	
+	public int addBook(Book book) {
+		bookMapper.addBook(book);
+		return 0;
+	}
+	
+	public int delBook(String name) {
+		bookMapper.delBook(name);
+		return 0;
+	}
+	
+	public List<Book> selBook(String name) {
+		List<Book> book =bookMapper.selBook(name);
+		return book;
+	}
+	
+	public int updBook(Book book) {
+		bookMapper.updBook(book);
+		return 0;
+	}
 }

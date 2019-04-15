@@ -9,8 +9,6 @@ private float price;
 private float discount;
 private String rdate;
 private String type;
-private String presentation;
-private String reserve;
 public int getBid() {
 	return bid;
 }
@@ -58,17 +56,5 @@ public String getType() {
 }
 public void setType(String type) {
 	this.type = type;
-}
-public String getPresentation() {
-	return presentation;
-}
-public void setPresentation(String presentation) {
-	this.presentation = presentation;
-}
-public String getReserve() {
-	return reserve;
-}
-public void setReserve(String reserve) {
-	this.reserve = reserve;
 }
 }

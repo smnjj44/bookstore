@@ -38,7 +38,7 @@ body {
 						data-toggle="dropdown"> 图书管理 <b class="caret"></b>
 					</a>
 						<ul class="dropdown-menu">
-							<li><a href="allbooks.html">查看图书</a></li>
+							<li><a th:href="@{/allBooks.action}" >查看图书</a></li>
 							<li class="divider"></li>
 							<li><a href="book_add.html">查看留言</a></li>
 						</ul></li>
@@ -67,28 +67,15 @@ body {
 	</nav>
 
 	<div style="padding: 70px 550px 10px">
-		<form method="post" action="querybook.html" class="form-inline"
+		<form method="post" action="/selBook.action" class="form-inline"
 			id="searchform">
 			<div class="input-group">
 				<input type="text" placeholder="输入图书名" class="form-control"
-					id="search" name="searchWord"/> <span
-					class="input-group-btn"> <input type="submit" value="搜索"
-					class="btn btn-default"/>
+					id="search" name="name" /> <span class="input-group-btn">
+					<input type="submit" value="搜索" class="btn btn-default" />
 				</span>
 			</div>
 		</form>
-		<script>
-			function mySubmit(flag) {
-				return flag;
-			}
-			$("#searchform").submit(function() {
-				var val = $("#search").val();
-				if (val == '') {
-					alert("请输入关键字");
-					return mySubmit(false);
-				}
-			})
-		</script>
 	</div>
 	<div class="panel panel-default" style="width: 90%; margin-left: 5%">
 		<div class="panel-heading">
@@ -98,12 +85,13 @@ body {
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>流水号</th>
-						<th>图书号</th>
-						<th>读者证号</th>
-						<th>借出日期</th>
-						<th>归还日期</th>
-						<th>删除</th>
+						<th>书名</th>
+						<th>作者</th>
+						<th>出版社</th>
+						<th>价格</th>
+						<th>折扣</th>
+						<th>日期</th>
+						<th>类型</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -115,13 +103,20 @@ body {
 						<td th:text="${m.discount}" />
 						<td th:text="${m.rdate}" />
 						<td th:text="${m.type}" />
-						<td th:text="${m.presentation}" />
-						<td th:text="${m.reserve}" />
-						 <td><a href="deletebook.html?"><button type="button" class="btn btn-danger btn-xs">删除</button></a></td>
+						<td><a href="book_update.html"><button
+									type="button" class="btn btn-danger btn-xs">修改</button></a>
+						<a th:href="@{/delBook.action(name=${m.name})}" ><button
+									type="button" class="btn btn-danger btn-xs">删除</button></a></td>
 					</tr>
+				
+					<tr>
+						<td><a href="book_add.html"><button type="button"
+									class="btn btn-danger btn-xs">增加图书</button></a></td>
+					</tr>
+			
 				</tbody>
 			</table>
 		</div>
 	</div>
-	</body>
+</body>
 </html>

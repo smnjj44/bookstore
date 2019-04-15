@@ -3,6 +3,7 @@ package com.springboot.bookstore.controller;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.bookstore.service.LoginService;
 
@@ -12,20 +13,25 @@ public class LoginController {
 	private LoginService loginService;
 
 	@RequestMapping("/login")
-	public String login(String name, String password) {
+	public ModelAndView login(String name, String password) {
 		String pass = loginService.login(name);
 		String[] arr = pass.split("_");
 		if (arr.length != 0) {
 			if (arr[0].equals(password)) {
 				if(arr[1].equals("manager")) {
-					return "manager_main";
+					ModelAndView view = new ModelAndView("manager_main");
+					view.addObject("name", arr[2]);
+					return view;
 				}
 				if(arr[1].equals("customer")) {
-					return "";
+					ModelAndView view = new ModelAndView("");
+					view.addObject("name", arr[2]);
+					return view;
 				}
 			}
 		}
-		return "login_fail";
+		ModelAndView view = new ModelAndView("login_fail");
+		return view;
 	}
 	
 	@RequestMapping("/register")

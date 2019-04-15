@@ -1,7 +1,5 @@
 package com.springboot.bookstore.service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -19,14 +17,11 @@ public class LoginService {
 	public String login(String name) {
 		Manager manager =loginMapper.selectByManName(name);
 		Customer customer = loginMapper.selectByCusName(name);
-		Map<String,String> map = new HashMap<String,String>();
 		if(manager != null) {
-			map.put("author", manager.getName());
-			return manager.getPassword()+"_manager"; 
+			return manager.getPassword()+"_manager"+"_"+manager.getName(); 
 		}
 		if(customer != null) {
-			map.put("author", customer.getRealname());
-			return customer.getPassword()+"_customer";
+			return customer.getPassword()+"_customer"+"_"+customer.getRealname();
 		}
 		return null;
 	}
