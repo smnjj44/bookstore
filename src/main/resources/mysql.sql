@@ -28,3 +28,11 @@ CREATE TABLE `bookstore`.`customer` (
   `rdate` VARCHAR(45) NULL,
   `type` VARCHAR(45) NULL,
   PRIMARY KEY (`bid`));
+
+CREATE TABLE `bookstore`.`message` (
+  `messageId` INT NOT NULL AUTO_INCREMENT,
+  `cid` INT NULL,
+  `date` VARCHAR(45) NULL,
+  `content` VARCHAR(45) NULL DEFAULT 'null',
+  PRIMARY KEY (`messageId`),
+  UNIQUE INDEX `messageId_UNIQUE` (`messageId` ASC));
