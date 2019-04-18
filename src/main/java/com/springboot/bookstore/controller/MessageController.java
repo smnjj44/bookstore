@@ -17,7 +17,14 @@ public class MessageController {
 	private MessageService messageService;
 	
 	@RequestMapping("/allMessage")
-	public String findBooks(Model model) {
+	public String findMessage(Model model) {
+		List<Message> list =messageService.findMessage();
+		model.addAttribute("list",list);
+		return "message_list";
+	}
+	
+	@RequestMapping("/addMessage")
+	public String addMessage(Model model) {
 		List<Message> list =messageService.findMessage();
 		model.addAttribute("list",list);
 		return "message_list";

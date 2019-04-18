@@ -6,4 +6,8 @@
 		resultType="com.springboot.bookstore.bean.Message">
 		select * from message
 	</select>
+	
+	<insert id="addMessage" parameterType="com.springboot.bookstore.bean.Message" >
+	 insert into message(cid,content,createDate) values(#{cid},#{content},#{createDate})
+	</insert>
 </mapper>

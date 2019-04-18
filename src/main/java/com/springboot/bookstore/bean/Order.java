@@ -1,6 +1,6 @@
 package com.springboot.bookstore.bean;
 
-import java.util.List;
+
 
 /**
  * 订单
@@ -10,6 +10,7 @@ import java.util.List;
 public class Order {
 public int oid;
 public float sumPrice;
+public String content;
 //订单顾客id
 public int cid;
 }

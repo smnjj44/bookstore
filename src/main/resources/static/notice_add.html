@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>注册</title>
+<link rel="stylesheet" href="bootstrap.min.css">
+<script src="jquery-3.2.1.js"></script>
+<script src="bootstrap.min.js"></script>
+<style>
+body {
+	background-color: rgb(240, 242, 245);
+}
+</style>
+</head>
+<body>
+	<div style="position: relative; top: 15%">
+
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-hidden="true">&times;</button>
+
+		</div>
+
+		<div class="alert alert-danger alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-hidden="true">&times;</button>
+
+		</div>
+	</div>
+	<div class="col-xs-6 col-md-offset-3"
+		style="position: relative; top: 25%">
+		<div class="panel panel-primary ">
+		<form action="/addNotice.action" method="post">
+			<div class="panel-heading">
+				<h3 class="panel-title">注册</h3>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="id">管理员名称</label> <input type="text" class="form-control"
+						id="realname" placeholder="请输入管理员名称" name="realname" />
+				</div>
+				<div class="form-group">
+					<label for="passwd">内容</label> <input type="text"
+						class="form-control" id="nickname" placeholder="请输入公告内容"
+						name="nickname" />
+				</div>
+				<p style="text-align: right; color: red; position: absolute"
+					id="info"></p>
+				<br />
+				<button type="submit" id="registerButton"
+					class="btn btn-primary  btn-block">发布</button>					
+			</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -20,4 +20,9 @@ public class MessageService {
 		List<Message> list = messageMapper.getAllMessage();
 		return list;
 	}
+	
+	public int addMessage(Message message){
+		messageMapper.addMessage(message);
+		return 0;
+	}
 }

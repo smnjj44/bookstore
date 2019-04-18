@@ -18,4 +18,7 @@
 	update customer set password=#{password} where realname=#{realname}
 	</update>
 	
+	<update id="updateManagerPassword" parameterType="com.springboot.bookstore.bean.Manager" >
+	update manager set password=#{password} where name=#{name}
+	</update>
 </mapper>

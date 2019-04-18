@@ -75,4 +75,11 @@ public class BookController {
 		view.addObject("list", list);
 		return view;
 	}
+	
+	@RequestMapping("/customerAllBooks")
+	public String customerAllBooks(Model model) {
+		List<Book> list =bookService.findBooks();
+		model.addAttribute("list",list);
+		return "customer_book_list";
+	}
 }

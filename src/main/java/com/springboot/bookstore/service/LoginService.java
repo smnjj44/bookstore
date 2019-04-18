@@ -54,4 +54,17 @@ public class LoginService {
 		}
 		return false;
 	}
+	
+	public int rePassword(String name , String oldPasswd , String newPasswd, String reNewPasswd) {
+		Manager manager = new Manager();
+		manager = loginMapper.selectByManName(name);
+		if(manager.getPassword().equals(oldPasswd)) {
+			if(newPasswd.equals(reNewPasswd)) {
+				manager.setPassword(newPasswd);
+				loginMapper.updateManagerPassword(manager);
+				return 0;
+			}
+		}
+		return 1;
+	}
 }

@@ -24,7 +24,7 @@ public class LoginController {
 					return view;
 				}
 				if(arr[1].equals("customer")) {
-					ModelAndView view = new ModelAndView("");
+					ModelAndView view = new ModelAndView("customer_main");
 					view.addObject("name", arr[2]);
 					return view;
 				}
@@ -50,4 +50,11 @@ public class LoginController {
 	return "";
 	}
 	
+	@RequestMapping("/repassword")
+	public String repassword(String name , String oldPasswd , String newPasswd, String reNewPasswd) {
+		if(loginService.rePassword(name,oldPasswd,newPasswd,reNewPasswd)==0) {
+			return "/";
+		}
+		return "repass_fail";
+	}
 }

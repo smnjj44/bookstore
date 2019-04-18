@@ -14,4 +14,6 @@ public interface LoginMapper {
 	public int insertCustomer(Customer customer); 
 	
 	public int updateCustomerPassword(Customer customer);
+	
+	public int updateManagerPassword(Manager manager);
 }

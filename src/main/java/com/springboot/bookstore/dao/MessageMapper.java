@@ -9,4 +9,6 @@ import com.springboot.bookstore.bean.Message;
 @Mapper
 public interface MessageMapper {
 	public List<Message> getAllMessage();
+	
+	public int addMessage(Message message);
 }
