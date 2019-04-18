@@ -18,4 +18,9 @@ public class OrderService {
 		List<Order> list = orderMapper.selectOrders();
 		return list;
 	}
+	
+	public int pushOrder(Order order) {
+		orderMapper.pushOrder(order);
+		return 0;
+	}
 }

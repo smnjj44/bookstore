@@ -1,5 +1,6 @@
 package com.springboot.bookstore.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,9 +25,19 @@ public class MessageController {
 	}
 	
 	@RequestMapping("/addMessage")
-	public String addMessage(Model model) {
+	public String addMessage(int id , String content) {
+		Message message = new Message();
+		message.cid= id;
+		message.content = content;
+		message.date = String.valueOf(new Date());
+		messageService.addMessage(message);
+		return "customer_message_list";
+	}
+	
+	@RequestMapping("/getMessage")
+	public String getMessage(Model model) {
 		List<Message> list =messageService.findMessage();
 		model.addAttribute("list",list);
-		return "message_list";
+		return "customer_message_list";
 	}
 }

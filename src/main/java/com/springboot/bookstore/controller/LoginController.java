@@ -1,6 +1,10 @@
 package com.springboot.bookstore.controller;
 
 import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +17,9 @@ public class LoginController {
 	private LoginService loginService;
 
 	@RequestMapping("/login")
-	public ModelAndView login(String name, String password) {
+	public ModelAndView login(HttpServletRequest request) {
+		String name = request.getParameter("name");
+		String password = request.getParameter("password");
 		String pass = loginService.login(name);
 		String[] arr = pass.split("_");
 		if (arr.length != 0) {
@@ -21,10 +27,12 @@ public class LoginController {
 				if(arr[1].equals("manager")) {
 					ModelAndView view = new ModelAndView("manager_main");
 					view.addObject("name", arr[2]);
+					request.setAttribute("manager_name", arr[2]);
 					return view;
 				}
 				if(arr[1].equals("customer")) {
 					ModelAndView view = new ModelAndView("customer_main");
+					request.setAttribute("customer_name", arr[2]);
 					view.addObject("name", arr[2]);
 					return view;
 				}

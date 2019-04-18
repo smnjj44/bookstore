@@ -24,4 +24,11 @@ public class NoticeController {
 		notice.content = content;
 		return "message_list";
 	}
+	
+	@RequestMapping("/getNotices")
+	public String getNotices(Model model) {
+		List<Notice> list =noticeService.getNotice();
+		model.addAttribute("list",list);
+		return "notice_list";
+	}
 }

@@ -67,4 +67,9 @@ public class LoginService {
 		}
 		return 1;
 	}
+	
+	public Customer selectByCusName(String name) {
+		Customer customer = loginMapper.selectByCusName(name);
+		return customer;
+	}
 }
