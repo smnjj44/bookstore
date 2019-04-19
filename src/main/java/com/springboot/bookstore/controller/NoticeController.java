@@ -1,5 +1,6 @@
 package com.springboot.bookstore.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -18,11 +19,13 @@ public class NoticeController {
 	private NoticeService noticeService;
 	
 	@RequestMapping("/addNotice")
-	public String addNotice(String name,String content) {
+	public String addNotice(String managerName,String content) {
 		Notice notice = new Notice();
-		notice.mangerName = name;
+		notice.managerName = managerName;
 		notice.content = content;
-		return "message_list";
+		notice.createDate = new Date().toString();
+		noticeService.addNotice(notice);
+		return "notice_add_success";
 	}
 	
 	@RequestMapping("/getNotices")

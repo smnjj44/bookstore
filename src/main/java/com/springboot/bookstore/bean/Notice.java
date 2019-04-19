@@ -6,7 +6,7 @@ package com.springboot.bookstore.bean;
  */
 public class Notice {
 public int nid;
-public String mangerName;
+public String managerName;
 public String content;
 public String createDate;
 }

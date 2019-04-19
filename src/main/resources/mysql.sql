@@ -10,13 +10,13 @@ INSERT INTO `bookstore`.`manager` (`id`, `name`, `password`) VALUES ('1', 'admin
 
 
 CREATE TABLE `bookstore`.`customer` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `cid` INT NOT NULL AUTO_INCREMENT,
   `realname` VARCHAR(45) NULL,
   `nickname` VARCHAR(45) NULL,
   `password` VARCHAR(45) NULL,
   `mailbox` VARCHAR(45) NULL,
   `address` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`));
+  PRIMARY KEY (`cid`));
   
   CREATE TABLE `bookstore`.`book` (
   `bid` INT NOT NULL AUTO_INCREMENT,
@@ -34,5 +34,19 @@ CREATE TABLE `bookstore`.`message` (
   `cid` INT NULL,
   `date` VARCHAR(45) NULL,
   `content` VARCHAR(45) NULL DEFAULT 'null',
-  PRIMARY KEY (`messageId`),
-  UNIQUE INDEX `messageId_UNIQUE` (`messageId` ASC));
+  PRIMARY KEY (`messageId`));
+
+CREATE TABLE `bookstore`.`notice` (
+  `nid` INT NOT NULL AUTO_INCREMENT,
+  `managerName` VARCHAR(45) NULL,
+  `content` VARCHAR(45) NULL,
+  `createDate` VARCHAR(45) NULL,
+  PRIMARY KEY (`nid`));
+  
+ CREATE TABLE `bookstore`.`order` (
+  `oid` int(11) NOT NULL AUTO_INCREMENT,
+  `sumPrice` float DEFAULT NULL,
+  `content` varchar(45) DEFAULT NULL,
+  `cid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`oid`)
+) 

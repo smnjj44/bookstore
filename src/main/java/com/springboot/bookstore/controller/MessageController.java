@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.bookstore.bean.Message;
 import com.springboot.bookstore.service.MessageService;
@@ -25,13 +26,16 @@ public class MessageController {
 	}
 	
 	@RequestMapping("/addMessage")
-	public String addMessage(int id , String content) {
+	public ModelAndView addMessage(int id , String content) {
 		Message message = new Message();
-		message.cid= id;
+		message.cid= id;  
 		message.content = content;
 		message.date = String.valueOf(new Date());
 		messageService.addMessage(message);
-		return "customer_message_list";
+		ModelAndView view = new ModelAndView("customer_message_list");
+		List<Message> list =messageService.findMessage();
+		view.addObject("list", list);
+		return view;
 	}
 	
 	@RequestMapping("/getMessage")

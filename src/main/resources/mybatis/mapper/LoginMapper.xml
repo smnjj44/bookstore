@@ -7,7 +7,7 @@
 	</select>
 	
 	<select id="selectByCusName" parameterType="java.lang.String" resultType="com.springboot.bookstore.bean.Customer">
-	select * from customer where realname=#{name}
+	select * from customer where realname=#{realname}
 	</select>
 	
 	<insert id="insertCustomer" parameterType="com.springboot.bookstore.bean.Customer" >

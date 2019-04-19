@@ -15,7 +15,7 @@ public class NoticeService {
 	@Resource
 	private NoticeMapper noticeMapper;
 	
-	public List<Notice> getNotice(){
+	public List<Notice> getNotice(){ 
 		List<Notice> list = noticeMapper.getAllNotice();
 		return list;
 	}

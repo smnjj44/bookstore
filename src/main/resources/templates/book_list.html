@@ -103,14 +103,14 @@ body {
 						<td th:text="${m.discount}" />
 						<td th:text="${m.rdate}" />
 						<td th:text="${m.type}" />
-						<td><a href="book_update.html"><button
+						<td><a href="/book_update.action"><button
 									type="button" class="btn btn-danger btn-xs">修改</button></a>
 						<a th:href="@{/delBook.action(name=${m.name})}" ><button
 									type="button" class="btn btn-danger btn-xs">删除</button></a></td>
 					</tr>
 				
 					<tr>
-						<td><a href="book_add.html"><button type="button"
+						<td><a href="/book_add.action"><button type="button"
 									class="btn btn-danger btn-xs">增加图书</button></a></td>
 					</tr>
 			

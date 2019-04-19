@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.springboot.bookstore.bean.Book;
+import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.bean.Order;
 import com.springboot.bookstore.service.BookService;
 import com.springboot.bookstore.service.LoginService;
@@ -27,55 +28,59 @@ public class OrderController {
 	private BookService bookService;
 	@Resource
 	private LoginService loginService;
-	
+
 	@RequestMapping("/getOrders")
 	public String findBooks(Model model) {
-		List<Order> list =orderService.getOrders();
-		model.addAttribute("list",list);
+		List<Order> list = orderService.getOrders();
+		model.addAttribute("list", list);
 		return "order_list";
 	}
-	
+
 	@RequestMapping("/pushOrder")
 	public String pushOrder(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Order order = new Order();
-		Map<Book , Integer> map = (Map<Book , Integer>)session.getAttribute("cartMap");
-        if(map == null){
-            map = new HashMap<Book , Integer>();
-        }
-        float money = 0;
-        StringBuilder content = new StringBuilder();
-        for(Book book : map.keySet()) {
-        	money+=book.getPrice()*map.get(book);
-        	content.append(book.getName()+"*"+map.get(book)) ;
-        }
-        
-        order.cid=loginService.selectByCusName(request.getAttribute("customer_name").toString()).getCid();
-        order.sumPrice = money;
-        order.content = content.toString();
-        orderService.pushOrder(order);
-        return "push_success";
+		Map<Book, Integer> map = (Map<Book, Integer>) session.getAttribute("cartMap");
+		if (map == null) {
+			map = new HashMap<Book, Integer>();
+		}
+		float money = 0;
+		StringBuilder content = new StringBuilder();
+		for (Book book : map.keySet()) {
+			money += book.getPrice() * map.get(book);
+			content.append(book.getName() + "*" + map.get(book));
+		}
+		Customer customer = new Customer(); 
+		customer.setCid(loginService.selectByCusName(session.getAttribute("customer_name").toString()).getCid());
+		order.setCid(customer.getCid());
+		order.setSumPrice(money);
+		order.setContent(content.toString());
+		orderService.pushOrder(order);
+		return "push_success";
 	}
-	
+
 	@RequestMapping("/addToCart")
-	public String addToCart(HttpServletRequest request , String bookName) {
-		 HttpSession session = request.getSession();
+	public String addToCart(HttpServletRequest request, String bookName) {
+		HttpSession session = request.getSession();
 		List<Book> list = bookService.selBook(bookName);
 		Book book = new Book();
-		if(list!=null) {
-		 book = list.get(0);
+		if (list != null) {
+			book = list.get(0);
 		}
-		 @SuppressWarnings("unchecked")
-		Map<Book , Integer> map = (Map<Book , Integer>)session.getAttribute("cartMap");
-	        if(map == null){
-	            map = new HashMap<Book , Integer>();
-	        }
-	        if(map.containsKey(book)) {
-	        	map.put(book, map.get(book)+1);
-	        }else {
-	        	map.put(book, 1);
-	        }
-	        request.getSession().setAttribute("cartMap" , map);
-	        return "cart_list";
+		@SuppressWarnings("unchecked")
+		Map<String, Integer> map2 = (Map<String, Integer>) session.getAttribute("map2");
+		if (map2 == null) {
+			map2 = new HashMap<String, Integer>();
+		}
+		if (map2.containsKey(book.getName())) {
+			map2.put(book.getName(), map2.get(book.getName()) + 1);
+		} else {
+			map2.put(book.getName(), 1);
+		}
+		request.getSession().setAttribute("map2", map2);
+		Map<Book,Integer> map = new HashMap<Book,Integer>();
+		map.put(book, map2.get(book.getName()));
+		request.getSession().setAttribute("cartMap", map);
+		return "cart_list";
 	}
 }

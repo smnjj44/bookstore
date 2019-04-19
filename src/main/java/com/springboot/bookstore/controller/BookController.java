@@ -82,4 +82,12 @@ public class BookController {
 		model.addAttribute("list",list);
 		return "customer_book_list";
 	}
+	
+	@RequestMapping("/customerSelBook")
+	public ModelAndView customerSelBooks(String name) {
+		List<Book> list =bookService.selBook(name);
+		ModelAndView view = new ModelAndView("customer_book_list");
+		view.addObject("list", list);
+		return view;
+	}
 }

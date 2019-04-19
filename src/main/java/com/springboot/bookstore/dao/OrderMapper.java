@@ -8,7 +8,7 @@ import com.springboot.bookstore.bean.Order;
 
 @Mapper
 public interface OrderMapper {
-public List<Order> selectOrders();
-
 public int pushOrder(Order order);
+
+public List<Order> selectOrders();
 }

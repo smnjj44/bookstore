@@ -2,11 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.bookstore.dao.OrderMapper">
+
 	<insert id="pushOrder" parameterType="com.springboot.bookstore.bean.Order" >
-	 insert into order(sumPrice,cid,content) values(#{sumPrice},#{cid},#{content})
+	 insert into bookstore.order(sumPrice,cid,content) values(#{sumPrice},#{cid},#{content})
 	</insert>
 	
-	<select id="selectOrders"  resultType="com.springboot.bookstore.bean.Order">
-	select * from order 
+	
+	<select id="selectOrders" resultType="com.springboot.bookstore.bean.Order">
+		select * from bookstore.order
 	</select>
 </mapper>

@@ -8,6 +8,6 @@
 	</select>
 	
 	<insert id="addMessage" parameterType="com.springboot.bookstore.bean.Message" >
-	 insert into message(cid,content,createDate) values(#{cid},#{content},#{createDate})
+	 insert into message(cid,content,date) values(#{cid},#{content},#{date})
 	</insert>
 </mapper>

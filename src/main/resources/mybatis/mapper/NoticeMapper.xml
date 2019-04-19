@@ -8,6 +8,6 @@
 	</select>
 	
 	<insert id="addNotice" parameterType="com.springboot.bookstore.bean.Notice" >
-	 insert into notice(mangerName,content,createDate) values(#{mangerName},#{content},#{createDate})
+	 insert into notice(managerName,content,createDate) values(#{managerName},#{content},#{createDate})
 	</insert>
 </mapper>

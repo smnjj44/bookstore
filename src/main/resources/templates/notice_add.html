@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
-<title>注册</title>
-<link rel="stylesheet" href="bootstrap.min.css">
+<title>公告</title>
+<link rel="stylesheet" href="bootstrap.min.css" />
 <script src="jquery-3.2.1.js"></script>
 <script src="bootstrap.min.js"></script>
 <style>
@@ -32,17 +32,17 @@ body {
 		<div class="panel panel-primary ">
 		<form action="/addNotice.action" method="post">
 			<div class="panel-heading">
-				<h3 class="panel-title">注册</h3>
+				<h3 class="panel-title">公告</h3>
 			</div>
 			<div class="panel-body">
 				<div class="form-group">
 					<label for="id">管理员名称</label> <input type="text" class="form-control"
-						id="realname" placeholder="请输入管理员名称" name="realname" />
+						id="realname" readonly="readonly" th:value="${session.manager_name}" name="managerName" />
 				</div>
 				<div class="form-group">
 					<label for="passwd">内容</label> <input type="text"
 						class="form-control" id="nickname" placeholder="请输入公告内容"
-						name="nickname" />
+						name="content" />
 				</div>
 				<p style="text-align: right; color: red; position: absolute"
 					id="info"></p>
