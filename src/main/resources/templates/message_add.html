@@ -26,24 +26,24 @@
                     </a>
                 </li>
                 <li>
-                    <a href="reader_info.html" >
+                    <a href="/getMessage.action" >
                        留言板
                     </a>
                 </li>
                 <li >
-                    <a href="mylend.html" >
+                    <a href="/getNotices.action" >
                         查看公告
                     </a>
                 </li>
                 <li >
-                    <a href="mylend.html" >
+                    <a href="/cart_list.action" >
                         购物车
                     </a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="reader_info.html"><span class="glyphicon glyphicon-user"></span>&nbsp;</a></li>
-                <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span>&nbsp;退出</a></li>
+                <li><a href="reader_info.html"><span class="glyphicon glyphicon-user"></span>&nbsp; <b th:text="${session.customer_name}+',欢迎你'"></b> </a></li>
+                <li><a href="/"><span class="glyphicon glyphicon-log-in"></span>&nbsp;退出</a></li>
             </ul>
         </div>
     </div>
