@@ -1,6 +1,9 @@
 package com.springboot.bookstore.controller;
 
+import java.io.FileNotFoundException;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -8,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TestController {
 	@RequestMapping("/")
 	public String index() {
+		try {
+			System.out.println(ResourceUtils.getFile("classpath:static"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Controller不能写返回的文字了，因为配置文件下配置了返回templates目录下的html文件，RestController才能写返回的文字
 		return "index";
 	}
