@@ -38,4 +38,5 @@ public class BookService {
 		bookMapper.updBook(book);
 		return 0;
 	}
+	
 }

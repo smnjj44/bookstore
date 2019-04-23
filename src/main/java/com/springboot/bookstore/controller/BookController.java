@@ -1,12 +1,22 @@
 package com.springboot.bookstore.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.jni.FileInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.bookstore.bean.Book;
@@ -90,4 +100,42 @@ public class BookController {
 		view.addObject("list", list);
 		return view;
 	}
+	
+	@RequestMapping("/upload")
+	public ModelAndView upload(@RequestParam("file") MultipartFile file, HttpServletRequest request)  {
+		String name = request.getParameter("name");
+		ModelAndView view = new ModelAndView("upload_fail");
+		if (!file.isEmpty()) {
+	            String saveFileName = file.getOriginalFilename();
+	            if(!saveFileName.equals(name)) {	            
+	            	return  view;
+	            }
+	            File saveFile = new File(request.getServletContext().getRealPath("/upload/") + saveFileName);
+	            System.out.println("保存路径为："+saveFile); 
+	            if (!saveFile.getParentFile().exists()) {
+	                saveFile.getParentFile().mkdirs();
+	            }
+	            try {
+	                BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
+	                out.write(file.getBytes());
+	                out.flush();
+	                out.close();
+	            	List<Book> list =bookService.findBooks();
+	        		ModelAndView view2 = new ModelAndView("book_list");
+	        		view2.addObject("list", list);
+	        		return view2;	               
+	            } catch (FileNotFoundException e) {
+	                e.printStackTrace();
+	                System.out.println(e.getMessage());
+	                return view;
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	                System.out.println(e.getMessage());
+	                return view;
+	            }
+	        } else {
+	            return view;
+	        }
+	}
+
 }

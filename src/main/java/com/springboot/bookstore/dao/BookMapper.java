@@ -17,4 +17,5 @@ public interface BookMapper {
 	public List<Book> selBook(String name);
 	
 	public int updBook(Book book);
+	
 }

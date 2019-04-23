@@ -9,13 +9,14 @@
 
 	<insert id="addBook"
 		parameterType="com.springboot.bookstore.bean.Book">
-		insert into book(name,author,press,price,discount,rdate,type)
+		insert into
+		book(name,author,press,price,discount,rdate,type)
 		values(#{name},#{author},#{press},#{price},#{discount},#{rdate},#{type})
 	</insert>
 
-	<delete id="delBook"
-		parameterType="java.lang.String">
-		delete from book where name =#{name}
+	<delete id="delBook" parameterType="java.lang.String">
+		delete from book where name
+		=#{name}
 	</delete>
 
 	<select id="selBook" parameterType="java.lang.String"
@@ -29,4 +30,5 @@
 		author=#{author},press=#{press},price=#{price},discount=#{discount},rdate=#{rdate},type=#{type}
 		where name=#{name}
 	</update>
+
 </mapper>

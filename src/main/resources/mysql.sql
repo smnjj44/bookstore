@@ -49,4 +49,6 @@ CREATE TABLE `bookstore`.`notice` (
   `content` varchar(45) DEFAULT NULL,
   `cid` int(11) DEFAULT NULL,
   PRIMARY KEY (`oid`)
-) 
+) ;
+
+Alter table book add path varchar(100) not Null;
