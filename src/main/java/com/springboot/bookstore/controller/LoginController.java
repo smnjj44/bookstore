@@ -60,13 +60,21 @@ public class LoginController {
 	if(loginService.forgetPassword(realname, mailbox, newpassword)) {
 		return "index";
 	}
-	return "";
-	}
+	return "forgetps_fail";
+	} 
 	
 	@RequestMapping("/repassword")
 	public String repassword(String name , String oldPasswd , String newPasswd, String reNewPasswd) {
 		if(loginService.rePassword(name,oldPasswd,newPasswd,reNewPasswd)==0) {
-			return "/";
+			return "index"; 
+		}
+		return "repass_fail";
+	}
+	
+	@RequestMapping("/cusRepassword")
+	public String cusRepassword(String name , String oldPasswd , String newPasswd, String reNewPasswd) {
+		if(loginService.cusRepassword(name,oldPasswd,newPasswd,reNewPasswd)==0) {
+			return "index"; 
 		}
 		return "repass_fail";
 	}

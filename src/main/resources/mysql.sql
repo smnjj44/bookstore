@@ -51,4 +51,4 @@ CREATE TABLE `bookstore`.`notice` (
   PRIMARY KEY (`oid`)
 ) ;
 
-Alter table book add path varchar(100) not Null;
+Alter table book add path varchar(100) DEFAULT Null;

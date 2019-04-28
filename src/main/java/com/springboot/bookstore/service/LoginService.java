@@ -72,4 +72,17 @@ public class LoginService {
 		Customer customer = loginMapper.selectByCusName(name);
 		return customer;
 	}
+	
+	public int cusRepassword(String name , String oldPasswd , String newPasswd, String reNewPasswd) {
+		Customer customer = new Customer();
+		customer = loginMapper.selectByCusName(name);
+		if(customer.getPassword().equals(oldPasswd)) {
+			if(newPasswd.equals(reNewPasswd)) {
+				customer.setPassword(newPasswd);
+				loginMapper.updateCustomerPassword(customer);
+				return 0;
+			}
+		}
+		return 1;
+	}
 }

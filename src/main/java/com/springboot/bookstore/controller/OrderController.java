@@ -48,14 +48,16 @@ public class OrderController {
 		StringBuilder content = new StringBuilder();
 		for (Book book : map.keySet()) {
 			money += book.getPrice() * map.get(book);
-			content.append(book.getName() + "*" + map.get(book));
+			content.append(book.getName() + "*" + map.get(book)+"；");
+			Customer customer = new Customer();
+			customer.setCid(loginService.selectByCusName(session.getAttribute("customer_name").toString()).getCid());
+			order.setCid(customer.getCid());
+			order.setSumPrice(money);
+			order.setContent(content.toString());
 		}
-		Customer customer = new Customer(); 
-		customer.setCid(loginService.selectByCusName(session.getAttribute("customer_name").toString()).getCid());
-		order.setCid(customer.getCid());
-		order.setSumPrice(money);
-		order.setContent(content.toString());
 		orderService.pushOrder(order);
+		session.removeAttribute("cartMap");
+		session.removeAttribute("map2");
 		return "push_success";
 	}
 
@@ -78,8 +80,10 @@ public class OrderController {
 			map2.put(book.getName(), 1);
 		}
 		request.getSession().setAttribute("map2", map2);
-		Map<Book,Integer> map = new HashMap<Book,Integer>();
-		map.put(book, map2.get(book.getName()));
+		Map<Book, Integer> map = new HashMap<Book, Integer>();
+		for (String name : map2.keySet()) {
+			map.put(bookService.selBook(name).get(0), map2.get(name));
+		}
 		request.getSession().setAttribute("cartMap", map);
 		return "cart_list";
 	}

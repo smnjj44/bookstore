@@ -31,4 +31,8 @@
 		where name=#{name}
 	</update>
 
+	<update id="updBookPath"
+		parameterType="com.springboot.bookstore.bean.Book">
+		update book set path=#{path} where name=#{name}
+	</update>
 </mapper>

@@ -39,4 +39,9 @@ public class BookService {
 		return 0;
 	}
 	
+	public int updBookPath(Book book) {
+		bookMapper.updBookPath(book);
+		return 0;
+	}
+	
 }

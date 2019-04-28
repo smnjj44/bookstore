@@ -24,7 +24,7 @@ body {
 }
 </style>
 </head>
-<body>
+<body  background="10886.jpg">
 <nav class="navbar navbar-default" role="navigation" style="background-color:#fff">
     <div class="container-fluid">
         <div class="navbar-header" style="margin-left: 8%;margin-right: 1%">
@@ -52,6 +52,7 @@ body {
                         购物车
                     </a>
                 </li>
+                <li><a href="customer_repassword"> 修改密码 </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="reader_info.html"><span class="glyphicon glyphicon-user"></span>&nbsp; <b th:text="${session.customer_name}+',欢迎你'"></b> </a></li>
@@ -87,6 +88,8 @@ body {
 						<th>折扣</th>
 						<th>日期</th>
 						<th>类型</th>
+						<th>图片</th>
+						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -98,6 +101,7 @@ body {
 						<td th:text="${m.discount}" />
 						<td th:text="${m.rdate}" />
 						<td th:text="${m.type}" />
+						<td><img  th:src="@{${m.path}}"  width="80px" height="80px" /></td>
 						<td>
 						<a th:href="@{/addToCart.action(bookName=${m.name})}" ><button
 									type="button" class="btn btn-danger btn-xs">加入购物车</button></a></td>

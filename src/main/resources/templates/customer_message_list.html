@@ -13,7 +13,7 @@ body {
 }
 </style>
 </head>
-<body>
+<body  background="10886.jpg">
 <nav class="navbar navbar-default" role="navigation" style="background-color:#fff">
     <div class="container-fluid">
         <div class="navbar-header" style="margin-left: 8%;margin-right: 1%">
@@ -41,10 +41,12 @@ body {
                         购物车
                     </a>
                 </li>
+                <li><a href="customer_repassword"> 修改密码 </a></li>
             </ul>
+            
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="reader_info.html"><span class="glyphicon glyphicon-user"></span>&nbsp; <b th:text="${session.customer_name}+',欢迎你'"></b> </a></li>
-                <li><a href="/"><span class="glyphicon glyphicon-log-in"></span>&nbsp;退出</a></li>
+                <li><a href="/customerAllBooks.action"><span class="glyphicon glyphicon-log-in"></span>&nbsp;退出</a></li>
             </ul>
         </div>
     </div>

@@ -18,4 +18,5 @@ public interface BookMapper {
 	
 	public int updBook(Book book);
 	
+	public int updBookPath(Book book);
 }
