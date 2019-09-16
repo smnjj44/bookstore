@@ -3,6 +3,7 @@ package com.springboot.bookstore.service;
 
 import javax.annotation.Resource;
 
+import com.springboot.bookstore.util.EncryptUtil;
 import org.springframework.stereotype.Service;
 
 import com.springboot.bookstore.bean.Customer;
@@ -84,5 +85,24 @@ public class LoginService {
 			}
 		}
 		return 1;
+	}
+
+	public boolean securityRegister(String realname , String nickname , String password , String mailbox , String address) {
+		Manager manager =loginMapper.selectByManName(realname);
+		Customer customer = loginMapper.selectByCusName(nickname);
+		if(manager != null) {
+			return false;
+		}
+		if(customer != null) {
+			return false;
+		}
+		Customer cus = new Customer();
+		cus.setRealname(realname);
+		cus.setNickname(nickname);
+		cus.setPassword(EncryptUtil.encrypt(password));
+		cus.setMailbox(mailbox);
+		cus.setAddress(address);
+		loginMapper.insertCustomer(cus);
+		return true;
 	}
 }
