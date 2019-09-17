@@ -40,6 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf()// 由于使用的是JWT，我们这里不需要csrf
                 .disable().authorizeRequests()
                 .antMatchers("/favicon.ico", "/css/**", "/common/**", "/js/**", "/images/**", "/captcha.jpg", "/login", "/userLogin", "/login-error").permitAll()
-                .and().formLogin().loginPage("/login");
+                .antMatchers("/register.action","/login.action").permitAll().and().formLogin().loginPage("/login");
     }
 }
