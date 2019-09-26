@@ -3,12 +3,14 @@ package com.springboot.bookstore.config;
 import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.bean.Manager;
 import com.springboot.bookstore.dao.LoginMapper;
+import com.springboot.bookstore.service.LoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -34,6 +36,8 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private LoginMapper loginMapper;
+    @Resource
+    private LoginService loginService;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -41,5 +45,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable().authorizeRequests()
                 .antMatchers("/favicon.ico", "/css/**", "/common/**", "/js/**", "/images/**", "/captcha.jpg", "/login", "/userLogin", "/login-error").permitAll()
                 .antMatchers("/register.action","/login.action").permitAll().and().formLogin().loginPage("/login");
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        //获取登录用户信息
+        return name -> {
+            Manager manager =loginMapper.selectByManName(name);
+            Customer customer = loginMapper.selectByCusName(name);
+            if (manager != null){
+                return manager;
+            }
+            if (customer != null){
+                return  customer;
+            }
+            throw new UsernameNotFoundException("没有该用户信息");
+        };
     }
 }

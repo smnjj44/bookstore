@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.bean.Manager;
 
+import java.util.List;
+
 @Mapper
 public interface LoginMapper {
 	public Manager selectByManName(String name);
@@ -16,4 +18,8 @@ public interface LoginMapper {
 	public int updateCustomerPassword(Customer customer);
 	
 	public int updateManagerPassword(Manager manager);
+
+	public List<Manager> selectsByManName(String name);
+
+	public List<Customer> selectsByCusName(String name);
 }

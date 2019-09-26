@@ -1,33 +1,52 @@
 package com.springboot.bookstore.bean;
 
-public class Customer {
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+
+public class Customer  implements UserDetails {
 	private int cid;
 	private String realname;
 	private String nickname;
 	private String password;
 	private String mailbox;
 	private String address;
-	public int getCid() {
-		return cid;
+	private List<GrantedAuthority> authorities;
+	private String telephone;
+	private String consumption;
+	private String zip;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.authorities;
 	}
-	public void setCid(int cid) {
-		this.cid = cid;
-	}
-	public String getRealname() {
-		return realname;
-	}
-	public void setRealname(String realname) {
-		this.realname = realname;
-	}
-	public String getNickname() {
+
+	@Override
+	public String getUsername() {
 		return nickname;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
 	}
-	public String getPassword() {
-		return password;
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
 	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -61,7 +80,26 @@ public class Customer {
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
-	private String telephone;
-	private String consumption;
-	private String zip;
+	public int getCid() {
+		return cid;
+	}
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+	public String getRealname() {
+		return realname;
+	}
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String f) {
+		this.nickname = nickname;
+	}
+	@Override
+	public String getPassword() {
+		return password;
+	}
 }

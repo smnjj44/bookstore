@@ -4,16 +4,32 @@ package com.springboot.bookstore.service;
 import javax.annotation.Resource;
 
 import com.springboot.bookstore.util.EncryptUtil;
+import com.springboot.bookstore.util.JwtTokenUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.bean.Manager;
 import com.springboot.bookstore.dao.LoginMapper;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class LoginService {
 	@Resource
 	private LoginMapper loginMapper;
+	@Autowired
+	private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 	
 	public String login(String name) {
 		Manager manager =loginMapper.selectByManName(name);
@@ -29,7 +45,7 @@ public class LoginService {
 	
 	public boolean register(String realname , String nickname , String password , String mailbox , String address) {
 		Manager manager =loginMapper.selectByManName(realname);
-		Customer customer = loginMapper.selectByCusName(nickname);
+		Customer customer = loginMapper.selectByCusName(realname);
 		if(manager != null) {
 			return false; 
 		}
@@ -88,12 +104,12 @@ public class LoginService {
 	}
 
 	public boolean securityRegister(String realname , String nickname , String password , String mailbox , String address) {
-		Manager manager =loginMapper.selectByManName(realname);
-		Customer customer = loginMapper.selectByCusName(nickname);
-		if(manager != null) {
+		List<Manager> managerList =loginMapper.selectsByManName(realname);
+		List<Customer> customerList = loginMapper.selectsByCusName(realname);
+		if(managerList.size() > 0) {
 			return false;
 		}
-		if(customer != null) {
+		if(customerList.size() > 0) {
 			return false;
 		}
 		Customer cus = new Customer();
@@ -104,5 +120,24 @@ public class LoginService {
 		cus.setAddress(address);
 		loginMapper.insertCustomer(cus);
 		return true;
+	}
+
+	public Map<String,Object> securityLogin(String name, String password) {
+        String token = null;
+        HashMap map = new HashMap<String,String>();
+	    try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(name);
+            if (!EncryptUtil.match(password,userDetails.getPassword())) {
+                throw new BadCredentialsException("密码不正确");
+            }
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtTokenUtil.generateToken(userDetails);
+            map.put("token",token);
+            map.put("ath", userDetails.getAuthorities());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return  map;
 	}
 }

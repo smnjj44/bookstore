@@ -11,7 +11,7 @@
 	</select>
 	
 	<insert id="insertCustomer" parameterType="com.springboot.bookstore.bean.Customer" >
-	 insert into customer(realname,nickname,password,mailbox,address) values(#{realname},#{nickname},#{password},#{mailbox},#{address})
+	 insert into customer(realname,nickname,password,mailbox,address,auth) values(#{realname},#{nickname},#{password},#{mailbox},#{address},'user')
 	</insert>
 	
 	<update id="updateCustomerPassword" parameterType="com.springboot.bookstore.bean.Customer" >
@@ -21,4 +21,12 @@
 	<update id="updateManagerPassword" parameterType="com.springboot.bookstore.bean.Manager" >
 	update manager set password=#{password} where name=#{name}
 	</update>
+
+	<select id="selectsByManName" parameterType="java.lang.String" resultType="com.springboot.bookstore.bean.Manager">
+	select * from manager where name=#{name}
+	</select>
+
+	<select id="selectsByCusName" parameterType="java.lang.String" resultType="com.springboot.bookstore.bean.Customer">
+	select * from customer where realname=#{realname}
+	</select>
 </mapper>

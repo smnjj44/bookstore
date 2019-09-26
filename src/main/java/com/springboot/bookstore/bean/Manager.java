@@ -29,7 +29,7 @@ public void setName(String name) {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
-
+	@Override
 	public String getPassword() {
 	return password;
 }

@@ -3,19 +3,21 @@ create database bookstore;
 CREATE TABLE `bookstore`.`manager` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(125) NOT NULL,
+  `auth` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
   
-INSERT INTO `bookstore`.`manager` (`id`, `name`, `password`) VALUES ('1', 'admin', 'admin');
+INSERT INTO `bookstore`.`manager` (`id`, `name`, `password`, `auth`) VALUES ('1', 'admin', 'admin', 'admin');
 
 
 CREATE TABLE `bookstore`.`customer` (
   `cid` INT NOT NULL AUTO_INCREMENT,
   `realname` VARCHAR(45) NULL,
   `nickname` VARCHAR(45) NULL,
-  `password` VARCHAR(45) NULL,
+  `password` VARCHAR(125) NULL,
   `mailbox` VARCHAR(45) NULL,
   `address` VARCHAR(45) NULL,
+  `auth` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`cid`));
   
   CREATE TABLE `bookstore`.`book` (
