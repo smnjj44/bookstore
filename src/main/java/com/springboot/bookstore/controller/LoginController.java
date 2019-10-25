@@ -115,13 +115,13 @@ public class LoginController {
         if (manName != null){
             ModelAndView view = new ModelAndView("manager_main");
             httpSession.setAttribute("manager_name", userDetails.getUsername());
-            httpSession.setAttribute("manager_token", token);
+            httpSession.setAttribute("token", token);
             return view;
         }
         if (cusName != null){
             ModelAndView view = new ModelAndView("customer_main");
             httpSession.setAttribute("customer_name", userDetails.getUsername());
-            httpSession.setAttribute("customer_token", token);
+            httpSession.setAttribute("token", token);
             return view;
         }
         return null;
