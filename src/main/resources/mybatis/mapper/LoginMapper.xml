@@ -29,4 +29,12 @@
 	<select id="selectsByCusName" parameterType="java.lang.String" resultType="com.springboot.bookstore.bean.Customer">
 	select * from customer where realname=#{realname}
 	</select>
+
+	<select id="getAuthByManName" parameterType="java.lang.String" resultType="string">
+	select auth from  manager where name=#{name}
+	</select>
+
+	<select id="getAuthByCusName" parameterType="java.lang.String" resultType="string">
+	select auth from  customer where realname=#{realname}
+	</select>
 </mapper>

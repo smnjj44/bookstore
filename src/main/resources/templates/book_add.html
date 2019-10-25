@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
 <title>新增图书</title>
@@ -71,6 +71,7 @@ body {
 					<p style="text-align: right; color: red; position: absolute"
 						id="info"></p>
 					<br />
+					<input type="hidden" id="Authorization" name="Authorization" th:value="${session.manager_token}" />
 					<button type="submit" id="registerButton"
 						class="btn btn-primary  btn-block">提交</button>
 				</form>

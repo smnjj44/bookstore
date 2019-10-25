@@ -3,6 +3,7 @@ package com.springboot.bookstore.config;
 import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.bean.Manager;
 import com.springboot.bookstore.dao.LoginMapper;
+import com.springboot.bookstore.fiflter.JwtAuthenticationTokenFilter;
 import com.springboot.bookstore.service.LoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,5 +62,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
             throw new UsernameNotFoundException("没有该用户信息");
         };
+    }
+
+    @Bean
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(){
+        return new JwtAuthenticationTokenFilter();
     }
 }

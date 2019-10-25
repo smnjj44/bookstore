@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.springboot.bookstore.util.EncryptUtil;
+import com.springboot.bookstore.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,18 +14,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.service.LoginService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class LoginController {
     @Resource
     private LoginService loginService;
-
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
 //	@RequestMapping("/login")
 //	public ModelAndView login(HttpServletRequest request) {
@@ -97,14 +101,27 @@ public class LoginController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login(HttpServletRequest request) {
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
-        String token = loginService.securityLogin(name, password).get("token") == null ? null : loginService.securityLogin(name, password).get("token").toString();
+    public ModelAndView login(@RequestParam(value = "name")String userName,@RequestParam(value = "password")String password,HttpSession httpSession) {
+        UserDetails userDetails = loginService.securityLogin(userName, password);
+        String token = jwtTokenUtil.generateToken(userDetails);
+        String manName = loginService.getAuthByManName(userName);
+        String cusName = loginService.getAuthByCusName(userName);
         if (token == null) {
-            ModelAndView view = new ModelAndView("login_fail");
+           ModelAndView view = new ModelAndView("login_fail");
             return view;
         }
-        List<GrantedAuthority> authorities =  null;
+        if (manName != null){
+            ModelAndView view = new ModelAndView("manager_main");
+            httpSession.setAttribute("manager_name", userDetails.getUsername());
+            httpSession.setAttribute("manager_token", token);
+            return view;
+        }
+        if (cusName != null){
+            ModelAndView view = new ModelAndView("customer_main");
+            httpSession.setAttribute("customer_name", userDetails.getUsername());
+            httpSession.setAttribute("customer_token", token);
+            return view;
+        }
+        return null;
     }
 }

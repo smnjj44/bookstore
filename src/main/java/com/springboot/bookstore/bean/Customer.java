@@ -1,8 +1,10 @@
 package com.springboot.bookstore.bean;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,13 +15,19 @@ public class Customer  implements UserDetails {
 	private String password;
 	private String mailbox;
 	private String address;
-	private List<GrantedAuthority> authorities;
+	//权限角色字段
+	private String auth;
 	private String telephone;
 	private String consumption;
 	private String zip;
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.authorities;
+		String[] authorities = auth.split(",");
+		List<GrantedAuthority> authorityList = new ArrayList<>();
+		for (String auth : authorities) {
+			authorityList.add(new SimpleGrantedAuthority(auth));
+		}
+		return authorityList;
 	}
 
 	@Override
@@ -101,5 +109,11 @@ public class Customer  implements UserDetails {
 	@Override
 	public String getPassword() {
 		return password;
+	}
+	public String getAuth() {
+		return auth;
+	}
+	public void setAuth(String auth) {
+		this.auth = auth;
 	}
 }

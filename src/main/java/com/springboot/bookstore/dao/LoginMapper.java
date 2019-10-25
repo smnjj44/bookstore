@@ -22,4 +22,8 @@ public interface LoginMapper {
 	public List<Manager> selectsByManName(String name);
 
 	public List<Customer> selectsByCusName(String name);
+
+	public String getAuthByManName(String name);
+
+	public String getAuthByCusName(String realname);
 }
