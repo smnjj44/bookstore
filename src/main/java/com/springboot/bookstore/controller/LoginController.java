@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import com.springboot.bookstore.util.EncryptUtil;
 import com.springboot.bookstore.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -85,6 +86,7 @@ public class LoginController {
     }
 
     @RequestMapping("/cusRepassword")
+    @PreAuthorize("hasAnyRole('user')")
     public String cusRepassword(String name, String oldPasswd, String newPasswd, String reNewPasswd) {
         if (loginService.cusRepassword(name, oldPasswd, newPasswd, reNewPasswd) == 0) {
             return "index";
