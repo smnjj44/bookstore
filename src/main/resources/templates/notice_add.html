@@ -50,6 +50,7 @@ body {
 				<button type="submit" id="registerButton"
 					class="btn btn-primary  btn-block">发布</button>					
 			</div>
+			<input type="hidden" id="Authorization" name="Authorization" th:value="${session.token}" />
 			</form>
 		</div>
 	</div>
