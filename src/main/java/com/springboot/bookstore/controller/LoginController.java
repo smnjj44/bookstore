@@ -114,14 +114,18 @@ public class LoginController {
         }
         if (manName != null){
             ModelAndView view = new ModelAndView("manager_main");
-            httpSession.setAttribute("manager_name", userDetails.getUsername());
+            view.addObject("name", userName);
             httpSession.setAttribute("token", token);
+            httpSession.setAttribute("manager_name", userName);
             return view;
         }
         if (cusName != null){
             ModelAndView view = new ModelAndView("customer_main");
-            httpSession.setAttribute("customer_name", userDetails.getUsername());
+            view.addObject("name", userName);
             httpSession.setAttribute("token", token);
+            Customer cus = loginService.selectByCusName(userName);
+            httpSession.setAttribute("customer_cid", cus.getCid());
+            httpSession.setAttribute("customer_name", userName);
             return view;
         }
         return null;
