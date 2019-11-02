@@ -2,9 +2,12 @@ package com.springboot.bookstore.controller;
 
 import javax.annotation.Resource;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cn.hutool.http.HttpResponse;
 import com.springboot.bookstore.util.EncryptUtil;
 import com.springboot.bookstore.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.service.LoginService;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,9 +107,13 @@ public class LoginController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login(@RequestParam(value = "name")String userName,@RequestParam(value = "password")String password,HttpSession httpSession) {
+    public ModelAndView login(@RequestParam(value = "name")String userName, @RequestParam(value = "password")String password, HttpSession httpSession, HttpServletResponse response) {
         UserDetails userDetails = loginService.securityLogin(userName, password);
         String token = jwtTokenUtil.generateToken(userDetails);
+        Cookie cookie = new Cookie("token",token);
+        cookie.setMaxAge(60*60);
+        cookie.setPath("/");
+        response.addCookie(cookie);
         String manName = loginService.getAuthByManName(userName);
         String cusName = loginService.getAuthByCusName(userName);
         if (token == null) {

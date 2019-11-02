@@ -1,16 +1,57 @@
 package com.springboot.bookstore.controller;
 
 
+import com.springboot.bookstore.bean.Customer;
+import com.springboot.bookstore.service.LoginService;
+import com.springboot.bookstore.util.JwtTokenUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 @Controller
 public class TestController {
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	@Resource
+	private LoginService loginService;
+
 	@RequestMapping("/")
-	public String index() {
+	public ModelAndView index(HttpSession httpSession,HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		for (int i = 0; i < cookies.length; i++) {
+			String value = cookies[i].getValue();
+			if (value != null){
+				String userName = jwtTokenUtil.getUserNameFromToken(value);
+				String manName = loginService.getAuthByManName(userName);
+				String cusName = loginService.getAuthByCusName(userName);
+				if (manName != null){
+					ModelAndView view = new ModelAndView("manager_main");
+					httpSession.setAttribute("token", value);
+					httpSession.setAttribute("manager_name", userName);
+					view.addObject("name", userName);
+					return view;
+				}
+				if (cusName != null){
+					ModelAndView view = new ModelAndView("customer_main");
+					httpSession.setAttribute("token", value);
+					view.addObject("name", userName);
+					Customer cus = loginService.selectByCusName(userName);
+					httpSession.setAttribute("customer_cid", cus.getCid());
+					httpSession.setAttribute("customer_name", userName);
+					return view;
+				}
+			}
+		}
 		//Controller不能写返回的文字了，因为配置文件下配置了返回templates目录下的html文件，RestController才能写返回的文字
-		return "index";
+		ModelAndView view = new ModelAndView("index");
+		return view;
 	}
 	
 	@RequestMapping("/manager_repassword")

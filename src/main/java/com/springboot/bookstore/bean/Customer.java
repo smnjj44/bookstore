@@ -32,7 +32,7 @@ public class Customer  implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return nickname;
+		return realname;
 	}
 
 	@Override
