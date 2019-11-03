@@ -25,27 +25,29 @@ public class TestController {
 	@RequestMapping("/")
 	public ModelAndView index(HttpSession httpSession,HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
-		for (int i = 0; i < cookies.length; i++) {
-			String value = cookies[i].getValue();
-			if (value != null){
-				String userName = jwtTokenUtil.getUserNameFromToken(value);
-				String manName = loginService.getAuthByManName(userName);
-				String cusName = loginService.getAuthByCusName(userName);
-				if (manName != null){
-					ModelAndView view = new ModelAndView("manager_main");
-					httpSession.setAttribute("token", value);
-					httpSession.setAttribute("manager_name", userName);
-					view.addObject("name", userName);
-					return view;
-				}
-				if (cusName != null){
-					ModelAndView view = new ModelAndView("customer_main");
-					httpSession.setAttribute("token", value);
-					view.addObject("name", userName);
-					Customer cus = loginService.selectByCusName(userName);
-					httpSession.setAttribute("customer_cid", cus.getCid());
-					httpSession.setAttribute("customer_name", userName);
-					return view;
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				String value = cookies[i].getValue();
+				if (value != null) {
+					String userName = jwtTokenUtil.getUserNameFromToken(value);
+					String manName = loginService.getAuthByManName(userName);
+					String cusName = loginService.getAuthByCusName(userName);
+					if (manName != null) {
+						ModelAndView view = new ModelAndView("manager_main");
+						httpSession.setAttribute("token", value);
+						httpSession.setAttribute("manager_name", userName);
+						view.addObject("name", userName);
+						return view;
+					}
+					if (cusName != null) {
+						ModelAndView view = new ModelAndView("customer_main");
+						httpSession.setAttribute("token", value);
+						view.addObject("name", userName);
+						Customer cus = loginService.selectByCusName(userName);
+						httpSession.setAttribute("customer_cid", cus.getCid());
+						httpSession.setAttribute("customer_name", userName);
+						return view;
+					}
 				}
 			}
 		}

@@ -29,18 +29,24 @@ public class JwtAuthenticationTokenFilter  extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String requestHeader = httpServletRequest.getParameter(this.tokenHeader);
-        if (requestHeader !=null && requestHeader.startsWith(this.tokenHead)){
+        if (requestHeader !=null && requestHeader.startsWith(this.tokenHead)) {
             String authToken = requestHeader.substring(this.tokenHead.length());// The part after "Bearer "
-            String username = jwtTokenUtil.getUserNameFromToken(authToken);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                if (jwtTokenUtil.validateToken(authToken, userDetails)) {
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (jwtTokenUtil.isTokenExpired(authToken)) {
+                httpServletResponse.sendRedirect("/index.html");
+            } else {
+                String username = jwtTokenUtil.getUserNameFromToken(authToken);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                    if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
                 }
             }
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        }else {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
