@@ -1,6 +1,7 @@
 package com.springboot.bookstore.fiflter;
 
 import com.springboot.bookstore.util.JwtTokenUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,16 +30,10 @@ public class JwtAuthenticationTokenFilter  extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String requestHeader = httpServletRequest.getParameter(this.tokenHeader);
-        if (requestHeader !=null && requestHeader.startsWith(this.tokenHead)) {
-            String authToken = requestHeader.substring(this.tokenHead.length());// The part after "Bearer "
-            if (jwtTokenUtil.isTokenExpired(authToken)) {
-                Cookie newCookie=new Cookie("token",null);
-                newCookie.setMaxAge(0);
-                newCookie.setPath("/");
-                httpServletResponse.addCookie(newCookie);
-                httpServletResponse.sendRedirect("/");
-            } else {
+        try {
+            String requestHeader = httpServletRequest.getParameter(this.tokenHeader);
+            if (requestHeader !=null && requestHeader.startsWith(this.tokenHead)) {
+                String authToken = requestHeader.substring(this.tokenHead.length());// The part after "Bearer "
                 String username = jwtTokenUtil.getUserNameFromToken(authToken);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
@@ -50,8 +45,12 @@ public class JwtAuthenticationTokenFilter  extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(httpServletRequest, httpServletResponse);
-        }else {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        }catch (ExpiredJwtException e){
+            Cookie newCookie=new Cookie("token",null);
+            newCookie.setMaxAge(0);
+            newCookie.setPath("/");
+            httpServletResponse.addCookie(newCookie);
+            httpServletResponse.sendRedirect("/");
         }
     }
 }

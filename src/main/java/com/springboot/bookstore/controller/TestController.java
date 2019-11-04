@@ -4,6 +4,7 @@ package com.springboot.bookstore.controller;
 import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.service.LoginService;
 import com.springboot.bookstore.util.JwtTokenUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,42 +28,45 @@ public class TestController {
 	public ModelAndView index(HttpSession httpSession,HttpServletRequest request, HttpServletResponse httpServletResponse) {
 		Cookie[] cookies = request.getCookies();
         ModelAndView view = new ModelAndView("index");
-		if (cookies != null) {
-			for (int i = 0; i < cookies.length; i++) {
-				String value = cookies[i].getValue();
-				String key = cookies[i].getName();
-				if (value != null && key.equals("token")) {
-				    //当登录cookie存活时间比token有效时间长则这里会出现token失效异常
-                    if (jwtTokenUtil.isTokenExpired(value)){
-                        Cookie newCookie=new Cookie("token",null);
-                        newCookie.setMaxAge(0);
-                        newCookie.setPath("/");
-                        httpServletResponse.addCookie(newCookie);
-                        return view;
-                    }
-					String userName = jwtTokenUtil.getUserNameFromToken(value);
-					String manName = loginService.getAuthByManName(userName);
-					String cusName = loginService.getAuthByCusName(userName);
-					if (manName != null) {
-						ModelAndView view2 = new ModelAndView("manager_main");
-						httpSession.setAttribute("token", value);
-						httpSession.setAttribute("manager_name", userName);
-						view.addObject("name", userName);
-						return view2;
-					}
-					if (cusName != null) {
-						ModelAndView view2 = new ModelAndView("customer_main");
-						httpSession.setAttribute("token", value);
-						view.addObject("name", userName);
-						Customer cus = loginService.selectByCusName(userName);
-						httpSession.setAttribute("customer_cid", cus.getCid());
-						httpSession.setAttribute("customer_name", userName);
-						return view2;
+		//ModelAndView failView = new ModelAndView("login_fail");
+        try {
+			if (cookies != null) {
+				for (int i = 0; i < cookies.length; i++) {
+					String value = cookies[i].getValue();
+					String key = cookies[i].getName();
+					if (value != null && key.equals("token")) {
+						String userName = jwtTokenUtil.getUserNameFromToken(value);
+						String manName = loginService.getAuthByManName(userName);
+						String cusName = loginService.getAuthByCusName(userName);
+						if (manName != null) {
+							ModelAndView view2 = new ModelAndView("manager_main");
+							httpSession.setAttribute("token", value);
+							httpSession.setAttribute("manager_name", userName);
+							view2.addObject("name", userName);
+							return view2;
+						}
+						if (cusName != null) {
+							ModelAndView view2 = new ModelAndView("customer_main");
+							httpSession.setAttribute("token", value);
+							view2.addObject("name", userName);
+							Customer cus = loginService.selectByCusName(userName);
+							httpSession.setAttribute("customer_cid", cus.getCid());
+							httpSession.setAttribute("customer_name", userName);
+							return view2;
+						}
 					}
 				}
 			}
+		}catch (ExpiredJwtException e){
+			//当登录cookie存活时间比token有效时间长则这里会出现token失效异常，一般cookie存活时间没token长
+			Cookie newCookie=new Cookie("token",null);
+			newCookie.setMaxAge(0);
+			newCookie.setPath("/");
+			httpServletResponse.addCookie(newCookie);
+			return view;
 		}
 		//Controller不能写返回的文字了，因为配置文件下配置了返回templates目录下的html文件，RestController才能写返回的文字
+		//都找不到用户只能重新登录
 		return view;
 	}
 	

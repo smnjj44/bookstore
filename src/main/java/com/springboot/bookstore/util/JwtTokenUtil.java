@@ -53,14 +53,10 @@ public class JwtTokenUtil {
      */
     private Claims getClaimsFromToken(String token) {
         Claims claims = null;
-        try {
-            claims = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        claims = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
         return claims;
     }
 
@@ -69,12 +65,8 @@ public class JwtTokenUtil {
      */
     public String getUserNameFromToken(String token) {
         String username;
-        try {
-            Claims claims = getClaimsFromToken(token);
-            username =  claims.getSubject();
-        } catch (Exception e) {
-            username = null;
-        }
+        Claims claims = getClaimsFromToken(token);
+        username = claims.getSubject();
         return username;
     }
 
