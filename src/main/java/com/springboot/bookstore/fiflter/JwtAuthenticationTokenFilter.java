@@ -12,6 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,7 +33,11 @@ public class JwtAuthenticationTokenFilter  extends OncePerRequestFilter {
         if (requestHeader !=null && requestHeader.startsWith(this.tokenHead)) {
             String authToken = requestHeader.substring(this.tokenHead.length());// The part after "Bearer "
             if (jwtTokenUtil.isTokenExpired(authToken)) {
-                httpServletResponse.sendRedirect("/index.html");
+                Cookie newCookie=new Cookie("token",null);
+                newCookie.setMaxAge(0);
+                newCookie.setPath("/");
+                httpServletResponse.addCookie(newCookie);
+                httpServletResponse.sendRedirect("/");
             } else {
                 String username = jwtTokenUtil.getUserNameFromToken(authToken);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

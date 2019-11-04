@@ -11,6 +11,7 @@ import cn.hutool.http.HttpResponse;
 import com.springboot.bookstore.util.EncryptUtil;
 import com.springboot.bookstore.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +35,8 @@ public class LoginController {
     private LoginService loginService;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Value("${jwt.expiration}")
+    private Long expiration;
 
 //	@RequestMapping("/login")
 //	public ModelAndView login(HttpServletRequest request) {
