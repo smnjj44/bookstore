@@ -127,6 +127,7 @@ public class LoginController {
             ModelAndView view = new ModelAndView("manager_main");
             view.addObject("name", userName);
             httpSession.setAttribute("token", token);
+            httpSession.setAttribute("token_bak", token);
             httpSession.setAttribute("manager_name", userName);
             return view;
         }
@@ -134,6 +135,7 @@ public class LoginController {
             ModelAndView view = new ModelAndView("customer_main");
             view.addObject("name", userName);
             httpSession.setAttribute("token", token);
+            httpSession.setAttribute("token_bak", token);
             Customer cus = loginService.selectByCusName(userName);
             httpSession.setAttribute("customer_cid", cus.getCid());
             httpSession.setAttribute("customer_name", userName);

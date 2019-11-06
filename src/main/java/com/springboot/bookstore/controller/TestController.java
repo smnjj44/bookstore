@@ -42,6 +42,9 @@ public class TestController {
 							ModelAndView view2 = new ModelAndView("manager_main");
 							httpSession.setAttribute("token", value);
 							httpSession.setAttribute("manager_name", userName);
+							if (httpSession.getAttribute("token_bak") == null) {
+								httpSession.setAttribute("token_bak", value);
+							}
 							view2.addObject("name", userName);
 							return view2;
 						}
@@ -51,6 +54,9 @@ public class TestController {
 							view2.addObject("name", userName);
 							Customer cus = loginService.selectByCusName(userName);
 							httpSession.setAttribute("customer_cid", cus.getCid());
+							if (httpSession.getAttribute("token_bak") == null) {
+								httpSession.setAttribute("token_bak", value);
+							}
 							httpSession.setAttribute("customer_name", userName);
 							return view2;
 						}
@@ -58,7 +64,7 @@ public class TestController {
 				}
 			}
 		}catch (ExpiredJwtException e){
-			//当登录cookie存活时间比token有效时间长则这里会出现token失效异常，一般cookie存活时间没token长
+			//当登录cookie存活时间比token有效时间长则这里会出现token失效异常，一般cookie存活时间没token长，JWT TOKEN失效会报异常，除非自己写的认证通过解析获取时间来判断当前过期没，JWT只会自动过期报异常
 			Cookie newCookie=new Cookie("token",null);
 			newCookie.setMaxAge(0);
 			newCookie.setPath("/");
@@ -122,5 +128,15 @@ public class TestController {
 	public String customerRepassword() {
 		//Controller不能写返回的文字了，因为配置文件下配置了返回templates目录下的html文件，RestController才能写返回的文字
 		return "customer_repassword";
+	}
+
+	@RequestMapping("/exit")
+	public String accountExit(HttpSession httpSession,HttpServletRequest request, HttpServletResponse httpServletResponse){
+		httpSession.removeAttribute("token_bak");
+//		Cookie newCookie=new Cookie("token",null);
+//		newCookie.setMaxAge(0);
+//		newCookie.setPath("/");
+//		httpServletResponse.addCookie(newCookie);
+		return "index";
 	}
 }

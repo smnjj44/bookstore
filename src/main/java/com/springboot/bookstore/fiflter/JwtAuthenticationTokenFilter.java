@@ -16,9 +16,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
 import java.io.IOException;
+import java.util.Date;
 
-public class JwtAuthenticationTokenFilter  extends OncePerRequestFilter {
+public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -32,8 +34,17 @@ public class JwtAuthenticationTokenFilter  extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try {
             String requestHeader = httpServletRequest.getParameter(this.tokenHeader);
-            if (requestHeader !=null && requestHeader.startsWith(this.tokenHead)) {
+            if (requestHeader != null && requestHeader.startsWith(this.tokenHead)) {
                 String authToken = requestHeader.substring(this.tokenHead.length());// The part after "Bearer "
+                String token_bak = httpServletRequest.getSession().getAttribute("token_bak") == null ? null : httpServletRequest.getSession().getAttribute("token_bak").toString();
+                if (token_bak!=null){
+                    Date date =  jwtTokenUtil.getExpiredDateFromToken(authToken);
+                    Date date1 =  jwtTokenUtil.getExpiredDateFromToken(token_bak);
+                    if (date1.before(date)){
+                        httpServletRequest.getSession().removeAttribute("token_bak");
+                        httpServletResponse.sendRedirect("/");
+                    }
+                }
                 String username = jwtTokenUtil.getUserNameFromToken(authToken);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
@@ -45,8 +56,8 @@ public class JwtAuthenticationTokenFilter  extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(httpServletRequest, httpServletResponse);
-        }catch (ExpiredJwtException e){
-            Cookie newCookie=new Cookie("token",null);
+        } catch (ExpiredJwtException e) {
+            Cookie newCookie = new Cookie("token", null);
             newCookie.setMaxAge(0);
             newCookie.setPath("/");
             httpServletResponse.addCookie(newCookie);
