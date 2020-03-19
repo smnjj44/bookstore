@@ -61,6 +61,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             newCookie.setMaxAge(0);
             newCookie.setPath("/");
             httpServletResponse.addCookie(newCookie);
+            httpServletRequest.getSession().removeAttribute("token");
             httpServletResponse.sendRedirect("/");
         }
     }

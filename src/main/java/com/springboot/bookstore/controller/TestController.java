@@ -42,9 +42,9 @@ public class TestController {
 							ModelAndView view2 = new ModelAndView("manager_main");
 							httpSession.setAttribute("token", value);
 							httpSession.setAttribute("manager_name", userName);
-							if (httpSession.getAttribute("token_bak") == null) {
-								httpSession.setAttribute("token_bak", value);
-							}
+//							if (httpSession.getAttribute("token_bak") == null) {
+//								httpSession.setAttribute("token_bak", value);
+//							}
 							view2.addObject("name", userName);
 							return view2;
 						}
@@ -54,9 +54,9 @@ public class TestController {
 							view2.addObject("name", userName);
 							Customer cus = loginService.selectByCusName(userName);
 							httpSession.setAttribute("customer_cid", cus.getCid());
-							if (httpSession.getAttribute("token_bak") == null) {
-								httpSession.setAttribute("token_bak", value);
-							}
+//							if (httpSession.getAttribute("token_bak") == null) {
+//								httpSession.setAttribute("token_bak", value);
+//							}
 							httpSession.setAttribute("customer_name", userName);
 							return view2;
 						}
@@ -69,6 +69,7 @@ public class TestController {
 			newCookie.setMaxAge(0);
 			newCookie.setPath("/");
 			httpServletResponse.addCookie(newCookie);
+			httpSession.removeAttribute("token");
 			return view;
 		}
 		//Controller不能写返回的文字了，因为配置文件下配置了返回templates目录下的html文件，RestController才能写返回的文字

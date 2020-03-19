@@ -113,10 +113,6 @@ public class LoginController {
     public ModelAndView login(@RequestParam(value = "name")String userName, @RequestParam(value = "password")String password, HttpSession httpSession, HttpServletResponse response) {
         UserDetails userDetails = loginService.securityLogin(userName, password);
         String token = jwtTokenUtil.generateToken(userDetails);
-        Cookie cookie = new Cookie("token",token);
-        cookie.setMaxAge(60*60);
-        cookie.setPath("/");
-        response.addCookie(cookie);
         String manName = loginService.getAuthByManName(userName);
         String cusName = loginService.getAuthByCusName(userName);
         if (token == null) {
@@ -126,7 +122,19 @@ public class LoginController {
         if (manName != null){
             ModelAndView view = new ModelAndView("manager_main");
             view.addObject("name", userName);
-            httpSession.setAttribute("token", token);
+            if (httpSession.getAttribute("token") != null){
+                httpSession.setAttribute("token", httpSession.getAttribute("token"));
+                Cookie cookie = new Cookie("token",httpSession.getAttribute("token").toString());
+                cookie.setMaxAge(60*600);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }else {
+                httpSession.setAttribute("token", token);
+                Cookie cookie = new Cookie("token",token);
+                cookie.setMaxAge(60*600);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
             httpSession.setAttribute("token_bak", token);
             httpSession.setAttribute("manager_name", userName);
             return view;
@@ -134,7 +142,19 @@ public class LoginController {
         if (cusName != null){
             ModelAndView view = new ModelAndView("customer_main");
             view.addObject("name", userName);
-            httpSession.setAttribute("token", token);
+            if (httpSession.getAttribute("token") != null){
+                httpSession.setAttribute("token", httpSession.getAttribute("token"));
+                Cookie cookie = new Cookie("token",httpSession.getAttribute("token").toString());
+                cookie.setMaxAge(60*60);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }else {
+                httpSession.setAttribute("token", token);
+                Cookie cookie = new Cookie("token",token);
+                cookie.setMaxAge(60*60);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
             httpSession.setAttribute("token_bak", token);
             Customer cus = loginService.selectByCusName(userName);
             httpSession.setAttribute("customer_cid", cus.getCid());
