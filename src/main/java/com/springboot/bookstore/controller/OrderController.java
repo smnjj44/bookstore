@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.springboot.bookstore.exception.OrderException;
+import com.springboot.bookstore.service.impl.IBookService;
+import com.springboot.bookstore.service.impl.ILoginService;
+import com.springboot.bookstore.service.impl.IOrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,22 +19,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.springboot.bookstore.bean.Book;
 import com.springboot.bookstore.bean.Customer;
 import com.springboot.bookstore.bean.Order;
-import com.springboot.bookstore.service.BookService;
-import com.springboot.bookstore.service.LoginService;
-import com.springboot.bookstore.service.OrderService;
 
 @Controller
 public class OrderController {
 	@Resource
-	private OrderService orderService;
+	private IOrderService orderService;
 	@Resource
-	private BookService bookService;
+	private IBookService bookService;
 	@Resource
-	private LoginService loginService;
+	private ILoginService loginService;
 
 	@RequestMapping("/getOrders")
 	public String findBooks(Model model) {
-		List<Order> list = orderService.getOrders();
+		List<Order> list = null;
+		try {
+			list = orderService.getOrders();
+		} catch (OrderException e) {
+			e.printStackTrace();
+		}
 		model.addAttribute("list", list);
 		return "order_list";
 	}

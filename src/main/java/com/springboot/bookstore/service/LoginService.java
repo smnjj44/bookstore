@@ -3,6 +3,7 @@ package com.springboot.bookstore.service;
 
 import javax.annotation.Resource;
 
+import com.springboot.bookstore.service.impl.ILoginService;
 import com.springboot.bookstore.util.EncryptUtil;
 import com.springboot.bookstore.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class LoginService {
+public class LoginService implements ILoginService {
     @Resource
     private LoginMapper loginMapper;
     @Autowired
     private UserDetailsService userDetailsService;
 
-
+    @Override
     public String login(String name) {
         Manager manager = loginMapper.selectByManName(name);
         Customer customer = loginMapper.selectByCusName(name);
@@ -42,6 +43,7 @@ public class LoginService {
         return null;
     }
 
+    @Override
     public boolean register(String realname, String nickname, String password, String mailbox, String address) {
         Manager manager = loginMapper.selectByManName(realname);
         Customer customer = loginMapper.selectByCusName(realname);
@@ -61,6 +63,7 @@ public class LoginService {
         return true;
     }
 
+    @Override
     public boolean forgetPassword(String realname, String mailbox, String password) {
         Customer customer = loginMapper.selectByCusName(realname);
         if (customer.getMailbox().equals(mailbox)) {
@@ -71,6 +74,7 @@ public class LoginService {
         return false;
     }
 
+    @Override
     public int rePassword(String name, String oldPasswd, String newPasswd, String reNewPasswd) {
         Manager manager = new Manager();
         manager = loginMapper.selectByManName(name);
@@ -84,11 +88,13 @@ public class LoginService {
         return 1;
     }
 
+    @Override
     public Customer selectByCusName(String name) {
         Customer customer = loginMapper.selectByCusName(name);
         return customer;
     }
 
+    @Override
     public int cusRepassword(String name, String oldPasswd, String newPasswd, String reNewPasswd) {
         Customer customer = new Customer();
         customer = loginMapper.selectByCusName(name);
@@ -102,6 +108,7 @@ public class LoginService {
         return 1;
     }
 
+    @Override
     public boolean securityRegister(String realname, String nickname, String password, String mailbox, String address) {
         List<Manager> managerList = loginMapper.selectsByManName(realname);
         List<Customer> customerList = loginMapper.selectsByCusName(realname);
@@ -121,6 +128,7 @@ public class LoginService {
         return true;
     }
 
+    @Override
     public UserDetails securityLogin(String name, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(name);
         try {
@@ -135,11 +143,13 @@ public class LoginService {
         return userDetails;
     }
 
+    @Override
     public String getAuthByManName(String name){
         String auth = loginMapper.getAuthByManName(name);
         return auth;
     }
 
+    @Override
     public String getAuthByCusName(String realname){
         String auth = loginMapper.getAuthByCusName(realname);
         return auth;

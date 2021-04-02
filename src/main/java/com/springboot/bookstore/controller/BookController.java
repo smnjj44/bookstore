@@ -10,7 +10,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.tomcat.jni.FileInfo;
+import com.springboot.bookstore.service.impl.IBookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
@@ -20,13 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.bookstore.bean.Book;
-import com.springboot.bookstore.service.BookService;
 
 @Controller
 public class BookController {
 
 	@Resource
-	private BookService bookService;
+	private IBookService bookService;
 
 	@RequestMapping("/allBooks")
 	public String findBooks(Model model) {

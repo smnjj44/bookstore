@@ -9,7 +9,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
 @MapperScan("com.springboot.bookstore.dao")//mapper和启动类不在同一目录下就要开启启动时对mapper的包扫描
-@EnableAutoConfiguration
 public class BookStoreApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(BookStoreApplication.class, args);
